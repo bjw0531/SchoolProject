@@ -1,2 +1,2 @@
 # SchoolProject
-# Hello
+Hello
