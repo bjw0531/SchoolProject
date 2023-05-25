@@ -1,22 +1,23 @@
 ﻿#include "preprocess.h"
 #include "functions.h"
 
+
+
 int main()
 {
-    char names[5][50] = { "Soo", "Bang", "Gun", "Soo", "Gang" };
-    int prices[5] = { 100,200,300,400,5000000 };
+    
 
-    for (int i = 0; i < 5; i++)
-    {
-        CCinit(&Crypto[i], names[i], prices[i], i + 1);
-    }
+    Asciitxt();
+    printf("※ Maximize This Window First ※\n");
+    customPause("\n▶ Press Any Key To Start");
+    system("cls");
 
-    for (int i = 0; i < 5; i++)
-    {
-        CCprint(&Crypto[i], i * 12, 0);
-    }
+    for (int i = 0; i < 5; i++) CCinit(&Crypto[i], names[i], prices[i], i + 1);
 
-    gotoxy(0, 5);
+    printf("\n");
+    for (int i = 0; i < 5; i++) CCprint(&Crypto[i], i * 13, 1);
+
+    gotoxy(0, 3);
     printf("(1) 구매\n(2) 판매");
 
 }	
