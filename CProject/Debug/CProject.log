@@ -1,6 +1,10 @@
 ﻿  main.cpp
-C:\Users\itisf\Documents\Code\CProject\functions.h(11,21): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
-C:\Users\itisf\Documents\Code\CProject\functions.h(11,26): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
-C:\Users\itisf\Documents\Code\CProject\functions.h(26,5): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\itisf\Documents\Code\CProject\functions.h(62,5): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
-  CProject.vcxproj -> C:\Users\itisf\Documents\Code\CProject\Debug\CProject.exe
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(25,21): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(25,26): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(40,5): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(77,5): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(90,78): warning C4244: '인수': 'll'에서 'double'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(156,9): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(135,1): warning C4102: 'select2': 참조되지 않은 레이블입니다.
+C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\functions.h(149,1): warning C4102: 'select3': 참조되지 않은 레이블입니다.
+  CProject.vcxproj -> C:\Users\itisf\Documents\GitHub\SchoolProject\CProject\Debug\CProject.exe
