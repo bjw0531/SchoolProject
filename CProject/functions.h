@@ -2,74 +2,74 @@
 #include "preprocess.h"
 
 
-void gotoxy(int x, int y) // ÄÜ¼Ö ¸¶¿ì½º Ä¿¼­ ÀÌµ¿ ÇÔ¼ö
+void gotoxy(int x, int y) // ì½˜ì†” ë§ˆìš°ìŠ¤ ì»¤ì„œ ì´ë™ í•¨ìˆ˜
 {
-    COORD Pos = { x * 2, y };   // ÀÎÀÚ¸¦ COORD ÀÚ·áÇüÀ¸·Î º¯°æ, xÀÇ ÁÂÇ¥´Â 2¹è¸¦ ÃëÇØ¾ß 1:1 ºñÀ²ÀÌ±â ¶§¹®
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); // WinCon.h¿¡ Á¤ÀÇµÈ ÇÔ¼ö·Î Ä¿¼­ À§Ä¡¸¦ º¯°æ, GetStdHandle·Î Ãâ·ÂÃ¢ÀÇ ÇÚµéÀ» °¡Á®¿È
+    COORD Pos = { x * 2, y };   // ì¸ìë¥¼ COORD ìë£Œí˜•ìœ¼ë¡œ ë³€ê²½, xì˜ ì¢Œí‘œëŠ” 2ë°°ë¥¼ ì·¨í•´ì•¼ 1:1 ë¹„ìœ¨ì´ê¸° ë•Œë¬¸
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); // WinCon.hì— ì •ì˜ëœ í•¨ìˆ˜ë¡œ ì»¤ì„œ ìœ„ì¹˜ë¥¼ ë³€ê²½, GetStdHandleë¡œ ì¶œë ¥ì°½ì˜ í•¸ë“¤ì„ ê°€ì ¸ì˜´
 }
 
 void ColorPrint(double num)
 {
     char tmp[100] = { 0, };
-    if (num > 0)  printf("\033[38;2;242;61;61m+ ");  // »¡°£»öÀ¸·Î »öÀ» º¯°æ, +Ãâ·Â
-    if (num < 0)  printf("\033[38;2;38;145;204m- ");   // ÆÄ¶õ»öÀ¸·Î »öÀ» º¯°æ, -Ãâ·Â
+    if (num > 0)  printf("\033[38;2;242;61;61m+ ");  // ë¹¨ê°„ìƒ‰ìœ¼ë¡œ ìƒ‰ì„ ë³€ê²½, +ì¶œë ¥
+    if (num < 0)  printf("\033[38;2;38;145;204m- ");   // íŒŒë€ìƒ‰ìœ¼ë¡œ ìƒ‰ì„ ë³€ê²½, -ì¶œë ¥
     printf("%.1lf%%", fabs(num));
     printf("\033[0m");
 }
 
-void WalletPrint(ll wallet[], int x, int y) // Áö°© »óÅÂÃâ·Â
+void WalletPrint(ll wallet[], int x, int y) // ì§€ê°‘ ìƒíƒœì¶œë ¥
 {
     int cnt = 0;
-    gotoxy(x + cnt * 13, y-2);
-    printf("Çö±İ : $%.2lf", mycash);  // ÇöÀç µ· Ãâ·Â
+    gotoxy(x + cnt * 13, y - 2);
+    printf("í˜„ê¸ˆ : $%.2lf", mycash);  // í˜„ì¬ ëˆ ì¶œë ¥
 
     for (int i = 0; i < CRYPTOCNT; i++)
     {
-        if (wallet[i] > 0)  // wallet[i] = i¹øÂ° °¡»óÈ­Æó °¹¼ö
+        if (wallet[i] > 0)  // wallet[i] = ië²ˆì§¸ ê°€ìƒí™”í ê°¯ìˆ˜
         {
             gotoxy(x + cnt * 13, y);
-            printf("ÀÌ¸§ : %s\n", Crypto[i].name);    // i¹øÂ° °¡»óÈ­Æó ÀÌ¸§
+            printf("ì´ë¦„ : %s\n", Crypto[i].name);    // ië²ˆì§¸ ê°€ìƒí™”í ì´ë¦„
             gotoxy(x + cnt * 13, y + 1);
-            printf("°¹¼ö : %lld\n", wallet[i]);       // i¹øÂ° °¹¼ö Ãâ·Â
+            printf("ê°¯ìˆ˜ : %lld\n", wallet[i]);       // ië²ˆì§¸ ê°¯ìˆ˜ ì¶œë ¥
             gotoxy(x + cnt++ * 13, y + 2);
-            printf("ÃÑ¾× : $%.2lf", wallet[i] * Crypto[i].price); // °¡°İ * ÇöÀç°³¼ö
+            printf("ì´ì•¡ : $%.2lf", wallet[i] * Crypto[i].price); // ê°€ê²© * í˜„ì¬ê°œìˆ˜
         }
     }
 }
 
 void VaryPrice()
 {
-    for (int i = 0; i < CRYPTOCNT; i++) // ¸ğµç °¡»óÈ­Æó¿¡ ´ëÇØ¼­
+    for (int i = 0; i < CRYPTOCNT; i++) // ëª¨ë“  ê°€ìƒí™”íì— ëŒ€í•´ì„œ
     {
-        srand(time(NULL) + i);    // ÇöÀç½Ã°£+i·Î rand ½Ãµå ÃÊ±âÈ­
-        double randomChange = double(rand() % 70 + 1) / 1000;   // 0.001-0.07 : 0.1ÇÁ·Î¿¡¼­ 7ÇÁ·Î±îÁö
-        Crypto[i].updown = randomChange * 100;  // i¹øÂ° °¡»óÈ­ÆóÀÇ µî¶ôÆø ÀúÀå
-        if (rand() % 100 > 46)  // 0~46 ±îÁö ÇÏ¶ô, 47~99±îÁö »ó½Â
+        srand(time(NULL) + i);    // í˜„ì¬ì‹œê°„+ië¡œ rand ì‹œë“œ ì´ˆê¸°í™”
+        double randomChange = double(rand() % 70 + 1) / 1000;   // 0.001-0.07 : 0.1í”„ë¡œì—ì„œ 7í”„ë¡œê¹Œì§€
+        Crypto[i].updown = randomChange * 100;  // ië²ˆì§¸ ê°€ìƒí™”íì˜ ë“±ë½í­ ì €ì¥
+        if (rand() % 100 > 46)  // 0~46 ê¹Œì§€ í•˜ë½, 47~99ê¹Œì§€ ìƒìŠ¹
         {
-            Crypto[i].price += randomChange * Crypto[i].price;  // {randomChange}% ¸¸Å­ »ó½Â
+            Crypto[i].price += randomChange * Crypto[i].price;  // {randomChange}% ë§Œí¼ ìƒìŠ¹
         }
-        else 
+        else
         {
-            Crypto[i].price -= randomChange * Crypto[i].price;  // {randomChange}% ¸¸Å­ ÇÏ¶ô
+            Crypto[i].price -= randomChange * Crypto[i].price;  // {randomChange}% ë§Œí¼ í•˜ë½
             Crypto[i].updown *= -1;
         }
     }
-    
+
 }
 
 
-void CCprint(struct _CrypCur* CC, int x, int y) // CC Ãâ·Â ÇÔ¼ö
+void CCprint(struct _CrypCur* CC, int x, int y) // CC ì¶œë ¥ í•¨ìˆ˜
 {
     gotoxy(x, y);
-    printf("ÀÌ¸§ : %s", CC->name);    // ÀÌ¸§ Ãâ·Â
+    printf("ì´ë¦„ : %s", CC->name);    // ì´ë¦„ ì¶œë ¥
     gotoxy(x, y + 1);
-    printf("°¡°İ : $%.2lf", CC->price);   // °¡°İ Ãâ·Â
+    printf("ê°€ê²© : $%.2lf", CC->price);   // ê°€ê²© ì¶œë ¥
     gotoxy(x, y + 2);
-    printf("µî¶ôÆø : ");   // µî¶ôÆø Ãâ·Â
+    printf("ë“±ë½í­ : ");   // ë“±ë½í­ ì¶œë ¥
     ColorPrint(CC->updown);
 }
 
-void CCinit(struct _CrypCur* CC, const char name[], double price, int idx) // CC ÃÊ±âÈ­ ÇÔ¼ö
+void CCinit(struct _CrypCur* CC, const char name[], double price, int idx) // CC ì´ˆê¸°í™” í•¨ìˆ˜
 {
     CC->idx = idx;
     strcpy(CC->name, name);
@@ -79,7 +79,7 @@ void CCinit(struct _CrypCur* CC, const char name[], double price, int idx) // CC
 
 void Asciitxt()
 {
-    printf("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤\n");
+    printf("â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n");
     printf("        _      _               _                                          \n");
     printf(" /\\   /(_)_ __| |_ _   _  __ _| |                                         \n");
     printf(" \\ \\ / / | '__| __| | | |/ _` | |                                         \n");
@@ -96,30 +96,30 @@ void Asciitxt()
     printf("   /\\/\\   __ _ _ __| | _____| |_                                           \n");
     printf("  /    \\ / _` | '__| |/ / _ \\ __|                                          \n");
     printf(" / /\\/\\ \\ (_| | |  |   <  __/ |_                                           \n");
-    printf(" \\/    \\/\\__,_|_|  |_|\\_\\___|\\__|                                          \n");                                                                      
-    printf("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥\n");
+    printf(" \\/    \\/\\__,_|_|  |_|\\_\\___|\\__|                                          \n");
+    printf("â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n");
 }
 
-void customPause(const char* message) // »ç¿ëÀÚ ÁöÁ¤ pause
+void customPause(const char* message) // ì‚¬ìš©ì ì§€ì • pause
 {
     printf("%s", message);
-    _getch(); 
+    _getch();
 }
 
-void InitScreen() // ÃÊ±â ½ÃÀÛ È­¸é
+void InitScreen() // ì´ˆê¸° ì‹œì‘ í™”ë©´
 {
     Asciitxt();
-    printf("¡Ø Maximize This Window First ¡Ø\n");
-    customPause("\n¢º Press Any Key To Start");
+    printf("â€» Maximize This Window First â€»\n");
+    customPause("\nâ–¶ Press Any Key To Start");
     system("cls");
 }
 
-void InitVars() // CC Á¤º¸ ÃÊ±âÈ­
+void InitVars() // CC ì •ë³´ ì´ˆê¸°í™”
 {
     for (int i = 0; i < CRYPTOCNT; i++) CCinit(&Crypto[i], names[i], prices[i], i + 1);
 }
 
-void PrtCCInfo(int x, int y) // CC Ãâ·Â
+void PrtCCInfo(int x, int y) // CC ì¶œë ¥
 {
     gotoxy(x, y);
     for (int i = 0; i < CRYPTOCNT; i++) CCprint(&Crypto[i], i * 13, y);
@@ -128,96 +128,94 @@ void PrtCCInfo(int x, int y) // CC Ãâ·Â
     WalletPrint(wallet, x, y + 20);
 }
 
-void CursorView() // Ä¿¼­ °¡¸®±â
+void CursorView() // ì»¤ì„œ ê°€ë¦¬ê¸°
 {
-    CONSOLE_CURSOR_INFO cursorInfo = { 0, };    // CONSOLE_CURSOR_INFO ÀÚ·áÇü
-    cursorInfo.dwSize = 1; // Ä¿¼­ ±½±â (1 ~ 100)
-    cursorInfo.bVisible = FALSE; // Ä¿¼­ Visible TRUE(º¸ÀÓ) FALSE(¼û±è)
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo); // HandleÀÇ CursorÁ¤º¸¸¦ À§ÀÇ Á¤º¸·Î º¯°æ
+    CONSOLE_CURSOR_INFO cursorInfo = { 0, };    // CONSOLE_CURSOR_INFO ìë£Œí˜•
+    cursorInfo.dwSize = 1; // ì»¤ì„œ êµµê¸° (1 ~ 100)
+    cursorInfo.bVisible = FALSE; // ì»¤ì„œ Visible TRUE(ë³´ì„) FALSE(ìˆ¨ê¹€)
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo); // Handleì˜ Cursorì •ë³´ë¥¼ ìœ„ì˜ ì •ë³´ë¡œ ë³€ê²½
 }
 
-void ApplyTransaction(int mode, int idx, int cnt)
+void ApplyTransaction(ll mode, ll idx, ll cnt)
 {
     int type = 0;
-    if (mode == 1)      type = -1;  // ±¸¸ÅÀÌ¸é -1
-    else if (mode == 2) type = 1;   // ÆÇ¸ÅÀÌ¸é 1
+    if (mode == 1)      type = -1;  // êµ¬ë§¤ì´ë©´ -1
+    else if (mode == 2) type = 1;   // íŒë§¤ì´ë©´ 1
 
-    mycash += Crypto[idx].price * cnt * type;   // Áö°©¿¡ µ·À» ³ÖÀ»Áö »¬Áö °áÁ¤ÇÔ
-    
-    type *= -1; // ±¸¸ÅÀÌ¸é 1, ÆÇ¸ÅÀÌ¸é -1ÀÌ µÊ
+    mycash += Crypto[idx].price * cnt * type;   // ì§€ê°‘ì— ëˆì„ ë„£ì„ì§€ ëº„ì§€ ê²°ì •í•¨
+
+    type *= -1; // êµ¬ë§¤ì´ë©´ 1, íŒë§¤ì´ë©´ -1ì´ ë¨
     wallet[idx] += cnt * type;
-
-}   
+}
 
 void StartTransaction(int ccprintpos, int printpos)
 {
-    int CCmode, CCidx, CCcnt;
+    ll CCmode, CCidx, CCcnt;
 select1:
-    system("cls");
-    PrtCCInfo(0, ccprintpos);
+    system("cls");  // í™”ë©´ clear
+    PrtCCInfo(0, ccprintpos);   // CC ì •ë³´ ì¶œë ¥
     gotoxy(0, printpos);
-    printf("(1) ±¸¸Å\n(2) ÆÇ¸Å\n(ESC) µ¹¾Æ°¡±â");
+    printf("(1) êµ¬ë§¤\n(2) íŒë§¤\n(ESC) ëŒì•„ê°€ê¸°");
 
     while (1)
     {
-        CCmode = _getch() - '0';
-        if (CCmode == VK_ESCAPE - '0')
+        CCmode = _getch() - '0';    // getch()ë¡œ ê°’ì„ ë°›ê³  '0'ì„ ëºŒìœ¼ë¡œ ì •ìˆ˜ ë³€í™˜
+        if (CCmode == VK_ESCAPE - '0')  // ESCì™€ ê°’ì´ ê°™ì„ ê²½ìš°
         {
-            system("cls");
-            return;
+            system("cls");  // í™”ë©´ clear
+            return; // í•¨ìˆ˜ ì¢…ë£Œ
         }
-        if (1 > CCmode || CCmode > 2)   continue;
-        break;
+        if (1 > CCmode || CCmode > 2)   continue;   // 1~2ê°€ ì•„ë‹ì‹œì—” ë¬´í•œë£¨í”„
+        break;  // 1~2ì¼ì‹œì—” ë¬´í•œë£¨í”„ ì¢…ë£Œ
     }
 
 select2:
-    system("cls");
-    PrtCCInfo(0, ccprintpos);
+    system("cls");  // í™”ë©´ clear
+    PrtCCInfo(0, ccprintpos);   // CC ì •ë³´ ì¶œë ¥
     gotoxy(0, printpos);
-    for (int i = 0; i < CRYPTOCNT; i++) printf("(%d) %s\n", i + 1, Crypto[i].name);
-    printf("(ESC) µ¹¾Æ°¡±â\n");
+    for (int i = 0; i < CRYPTOCNT; i++) printf("(%d) %s\n", i + 1, Crypto[i].name); // CRYPTOCNT ìƒìˆ˜ê¹Œì§€ ëŒë©´ì„œ ië²ˆì§¸ ì´ë¦„ ì¶œë ¥
+    printf("(ESC) ëŒì•„ê°€ê¸°\n");
 
     while (1)
     {
-        CCidx = _getch() - '0' - 1;
-        if (CCidx == VK_ESCAPE - '0' - 1)   goto select1;
-        if (0 > CCidx || CCidx > 4)  continue;
-        break;
+        CCidx = _getch() - '0' - 1; // getch()ë¡œ ì •ìˆ˜ ë³€í™˜í•˜ê³  1ë¹¼ê¸°(1 -> 0, 5 -> 4) ì¸ë±ìŠ¤ë¥¼ 0ë¶€í„° ì‚¬ìš©í•˜ëŠ” ì»´í“¨í„°ì™€ ë§ì¶”ê¸° ìœ„í•¨
+        if (CCidx == VK_ESCAPE - '0' - 1)   goto select1;   // ESCì¼ ê²½ìš°ì—” select1ìœ¼ë¡œ
+        if (0 > CCidx || CCidx > CRYPTOCNT - 1)  continue;  // 0~CRYPTOCNT-1 ì´ ì•„ë‹ê²½ìš° ë¬´í•œë£¨í”„
+        break;  // ë§ëŠ”ê²½ìš° ì¢…ë£Œ
     }
 
 select3:
-    system("cls");
+    system("cls");  // í™”ë©´ clear
     while (1)
     {
-        PrtCCInfo(0, ccprintpos);
+        PrtCCInfo(0, ccprintpos);   // CC ì •ë³´ ì¶œë ¥
         gotoxy(0, printpos);
-        printf("°¹¼ö: ");
-        scanf("%d", &CCcnt); 
-        if (CCmode == 1 && Crypto[CCidx].price * CCcnt > mycash)    // ±¸¸Å °Å·¡ÀÌ°í Áö°©¿¡ ÃæºĞÇÑ µ·ÀÌ ¾øÀ» °æ¿ì
-        {
-            gotoxy(0, printpos+1);
-            printf("ÀÜ¾×ÀÌ ºÎÁ·ÇÕ´Ï´Ù.\n");
-            Sleep(1000);
-            system("cls");
-            continue;
-        }
-        if (CCmode == 2 && wallet[CCidx] < CCcnt)   // ÆÇ¸Å °Å·¡ÀÌ°í Áö°©¿¡ ÃæºĞÇÑ °¡»óÈ­Æó°¡ ¾øÀ» °æ¿ì
+        printf("ê°¯ìˆ˜: ");
+        scanf("%lld", &CCcnt);
+        if (CCmode == 1 && Crypto[CCidx].price * CCcnt > mycash)    // êµ¬ë§¤ ê±°ë˜ì´ê³  ì§€ê°‘ì— ì¶©ë¶„í•œ ëˆì´ ì—†ì„ ê²½ìš°
         {
             gotoxy(0, printpos + 1);
-            printf("°¡»óÈ­Æó°¡ ºÎÁ·ÇÕ´Ï´Ù.\n");
-            Sleep(1000);
-            system("cls");
+            printf("ì”ì•¡ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
+            Sleep(1000);    // 1ì´ˆ ëŒ€ê¸°
+            system("cls");  // í™”ë©´ clear
+            continue;
+        }
+        if (CCmode == 2 && wallet[CCidx] < CCcnt)   // íŒë§¤ ê±°ë˜ì´ê³  ì§€ê°‘ì— ì¶©ë¶„í•œ ê°€ìƒí™”íê°€ ì—†ì„ ê²½ìš°
+        {
+            gotoxy(0, printpos + 1);
+            printf("ê°€ìƒí™”íê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n");
+            Sleep(1000);    // 1ì´ˆ ëŒ€ê¸°
+            system("cls");  // í™”ë©´ clear
             continue;
         }
 
-        if (CCmode == 1)         printf("±¸¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
-        else if (CCmode == 2)    printf("ÆÇ¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+        if (CCmode == 1)         printf("êµ¬ë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");    // êµ¬ë§¤ì¼ê²½ìš°
+        else if (CCmode == 2)    printf("íŒë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");    // íŒë§¤ì¼ê²½ìš°
 
-        Sleep(1000);
-        break;
+        Sleep(1000);    // 1ì´ˆëŒ€ê¸°
+        break;          // while íƒˆì¶œ
     }
-    ApplyTransaction(CCmode, CCidx, CCcnt);
+    ApplyTransaction(CCmode, CCidx, CCcnt); // ê±°ë˜ ì ìš© í•¨ìˆ˜ í˜¸ì¶œ
 
-    system("cls");
+    system("cls");  // í™”ë©´ clear
 }
-
